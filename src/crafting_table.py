@@ -46,7 +46,7 @@ class CraftingTable():
 			if t[0] == building_name:
 				ratio = t[3]
 				cd = t[4]
-				if t[1] == 'Population':
+				if 'Population' in t[1] or '人口' in t[1]:
 					return ratio[-1]
 				else:
 					return ratio[-1] * 60 / cd
@@ -60,13 +60,13 @@ class CraftingTable():
 				ratio = t[3]
 				cd = t[4]
 				if output_speed == 0:
-					if t[1] == 'Population':
+					if 'Population' in t[1] or '人口' in t[1]:
 						input_type_num = len(ratio) - 1
 						return [r * 60 / cd / input_type_num for r in ratio[:-1]]
 					else:
 						return [r * 60 / cd  for r in ratio[:-1]]
 				else:
-					if t[1] == 'Population':
+					if 'Population' in t[1] or '人口' in t[1]:
 						input_type_num = len(ratio) - 1
 						return [output_speed * r * 60 / cd / input_type_num  / ratio[-1] for r in ratio[:-1]]
 					else:
