@@ -10,7 +10,7 @@ class Calculator():
 	def crafting_table_select(self):
 		self.crafting_table.disable_building_list = self.crafting_table.building_list()
 		self.resources_produced = []
-		resources_tbp = [self.target_name]
+		resources_tbp = [name for name in self.target_name]
 		while len(resources_tbp) > 0:
 			r = resources_tbp.pop()
 			maker_list = self.crafting_table.all_maker_find(r)
@@ -34,7 +34,8 @@ class Calculator():
 		self.resources_require_speed = {r : 0 for r in self.resources_produced}
 		# resources_produce_speed = {r : 0 for r in self.resources_produced}
 		resources_tbp_speed = {r : 0 for r in self.resources_produced}
-		resources_tbp_speed[self.target_name] = self.target_speed
+		for i, name in enumerate(self.target_name):
+			resources_tbp_speed[name] = self.target_speed[i]
 		self.building_num = {}
 
 		num_unsatisfied = 1
@@ -52,10 +53,7 @@ class Calculator():
 					for i, r_in in enumerate(self.crafting_table.input_name_list(maker)):
 						resources_tbp_speed[r_in] += self.crafting_table.input_speed_list(maker, s)[i]
 
-	def building_tree(self, resource='', speed=0, level=0):
-		if resource == '':
-			resource = self.target_name
-			speed = self.target_speed
+	def building_tree(self, resource, speed, level=0):
 		maker = self.crafting_table.maker_find(resource)[0]
 		maker_num = speed / self.crafting_table.output_speed(maker)
 		if level >= 10:
