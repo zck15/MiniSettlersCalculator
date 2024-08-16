@@ -1,5 +1,6 @@
 from calculate import Calculator
 from math import ceil
+import sys
 
 def show_building_tree(tree, level, last=False):
 	print('-|' * level + tree[0] + f' * {ceil(tree[1] * 10) / 10:.1f} ({tree[2]} {tree[3]:.1f})')
@@ -30,7 +31,11 @@ while menu_select != -1:
 		target_name.append(target[2*i])
 		target_speed.append(float(target[2*i+1]))
 
-	c = Calculator(target_name, target_speed, 'buildings_zh.json')
+	ct_name = 'buildings_zh.json'
+	if len(sys.argv) > 1:
+		ct_name = sys.argv[1]
+
+	c = Calculator(target_name, target_speed, ct_name)
 
 	c.crafting_table_select()
 
