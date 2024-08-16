@@ -6,6 +6,7 @@ class Calculator():
 		self.target_name = target_name
 		self.target_speed = target_speed
 		self.crafting_table = CraftingTable(crafting_table_name)
+		self.input_resources_list = []
 
 	def crafting_table_select(self):
 		self.crafting_table.disable_building_list = self.crafting_table.building_list()
@@ -29,6 +30,13 @@ class Calculator():
 				if r_i not in self.resources_produced:
 					if r_i not in resources_tbp:
 						resources_tbp.append(r_i)
+		print('是否有外部输入的资源？（没有请直接回车）\n例：铁 4.5 （外部输入每分钟4.5个铁）')
+		r_list = input().split()
+		while len(r_list) > 0:
+			for i in range(len(r_list)//2):
+				self.input_resources_list.append((r_list[2*i], float(r_list[2*i+1])))
+			r_list = input('是否还有外部输入的资源？（没有请直接回车）').split()
+
 
 	def calculate(self):
 		self.resources_require_speed = {r : 0 for r in self.resources_produced}
@@ -36,6 +44,8 @@ class Calculator():
 		resources_tbp_speed = {r : 0 for r in self.resources_produced}
 		for i, name in enumerate(self.target_name):
 			resources_tbp_speed[name] = self.target_speed[i]
+		for r, s in self.input_resources_list:
+			resources_tbp_speed[r] -= s
 		self.building_num = {}
 
 		num_unsatisfied = 1
@@ -61,10 +71,14 @@ class Calculator():
 		r_in_list = self.crafting_table.input_name_list(maker)
 		return [maker, maker_num, resource, speed,
 				[self.building_tree(r_in, self.crafting_table.input_speed_list(maker, speed)[i], level+1)
-				 for i, r_in in enumerate(r_in_list)]]
+				 for i, r_in in enumerate(r_in_list) 
+				 if self.crafting_table.maker_find(r_in)[0] in self.building_num]]
 
 	def using_tree(self, resource, level=1):
 		user_list = self.crafting_table.user_find(resource)
+		for user in user_list:
+			if user not in self.building_num:
+				user_list.remove(user)
 		user_product_list = [self.crafting_table.output_name(b) for b in user_list]
 		using_speed_list = [self.crafting_table.input_speed(b, resource, 
 								self.resources_require_speed[user_product_list[i]]) for i, b in enumerate(user_list)]
