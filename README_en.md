@@ -4,7 +4,7 @@
 
 Welcome to the Mini Settlers Calculator! This tool is designed to assist with production calculations for the game [Mini Settlers](https://store.steampowered.com/app/2521630/_Mini_Settlers/). Simply input the **target products** and **quantities** to calculate the required **number of buildings** and **building relationships**. With this tool, you can avoid complex rate calculations and focus on planning buildings and logistics in the game.
 
-![珍珠岛](.\figs\珍珠岛.png)
+![珍珠岛](./figs/珍珠岛.png)
 
 ## Features
 
